@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpserver
+  labels:
+    tipo: "dev"
+    app: apache
+spec:
+  replicas: 7
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - name: php-apache
+        image: ifcocasi/php:v1
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: hostvol
+          mountPath: /var/www/html/
+      volumes:
+        - name: hostvol
+          hostPath:
+            path: /data
